@@ -9,7 +9,13 @@ pipeline {
 
     stage('Test') {
       steps {
-        echo 'La vida son dos días'
+        echo 'La vida son dos dÃ­as'
+      }
+    }
+
+    stage('Package') {
+      steps {
+        sh 'mvn compile'
       }
     }
 
