@@ -3,19 +3,28 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        echo 'Hello World'
+        echo 'Building Artifacts...'
+        sh 'mvn compile'
       }
     }
 
     stage('Test') {
       steps {
         echo 'La vida son dos días'
+        sh 'mvn test'
       }
     }
 
-    stage('Test2') {
+    stage('Exex') {
       steps {
-        sh 'uname -a'
+        echo 'Executing...'
+        sh 'mvn exec:java'
+      }
+    }
+
+    stage('OK') {
+      steps {
+        sleep 10
       }
     }
 
