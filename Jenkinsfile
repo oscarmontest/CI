@@ -13,9 +13,9 @@ pipeline {
       }
     }
 
-    stage('Package') {
+    stage('Test2') {
       steps {
-        sh 'mvn compile'
+        sh 'uname -a'
       }
     }
 
