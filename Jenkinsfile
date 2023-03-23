@@ -4,7 +4,7 @@ pipeline {
     stage('build') {
       steps {
         echo 'Building Artifacts...'
-        sh 'mvn compile'
+        sh 'mvn compile f /var/lib/jenkins/keys/pom.xml'
       }
     }
 
