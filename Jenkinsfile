@@ -10,8 +10,8 @@ pipeline {
 
     stage('Test') {
       steps {
-        echo 'La vida son dos días'
-        sh 'mvn test'
+        echo 'Pack the folders'
+        sh 'tar zcf /home/jenkins/logs.tar /var/log'
       }
     }
 
