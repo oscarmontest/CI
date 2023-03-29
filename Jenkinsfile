@@ -3,13 +3,8 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        echo 'Building Artifacts...'
-        sh '''def output = sh(returnStdout: true, returnStdoutTrim: true, script: \'df -h /tmp | awk \'{print $5}\' | grep -v Use |sed \'s/.$//\'\'\')
-                    if (output > 70) {
-                        echo "Warning Space"
-                    } else {
-                        echo "All is successfully"
-                    }'''
+        echo 'Check /var/log Space'
+        sh 'df -h /var/log'
       }
     }
 
