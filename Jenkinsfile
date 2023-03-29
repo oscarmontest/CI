@@ -4,7 +4,7 @@ pipeline {
     stage('build') {
       steps {
         echo 'Building Artifacts...'
-        sh '''def output = sh(returnStdout: true, returnStdoutTrim: true, script: \'df -h /tmp | awk \'{print $5}\' | grep -v Use |sed \'s/.$//\'\')
+        sh '''def output = sh(returnStdout: true, returnStdoutTrim: true, script: \'df -h /tmp | awk \'{print $5}\' | grep -v Use |sed \'s/.$//\'\'\')
                     if (output > 70) {
                         echo "Warning Space"
                     } else {
