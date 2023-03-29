@@ -4,7 +4,12 @@ pipeline {
     stage('build') {
       steps {
         echo 'Building Artifacts...'
-        sh 'mvn compile -f /var/lib/jenkins/keys/pom.xml'
+        sh '''def output = sh(returnStdout: true, returnStdoutTrim: true, script: \'df -h /tmp | awk \'{print $5}\' | grep -v Use |sed \'s/.$//\'\')
+                    if (output > 70) {
+                        echo "Warning Space"
+                    } else {
+                        echo "All is successfully"
+                    }'''
       }
     }
 
