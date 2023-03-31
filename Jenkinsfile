@@ -1,32 +1,62 @@
 pipeline {
-  agent any
-  stages {
-    stage('build') {
-      steps {
-        echo 'Check /var/log Space'
-        sh 'df -h /var/log'
-      }
+    agent {
+        label('terraform_deploy_s3')
     }
-
-    stage('Test') {
-      steps {
-        echo 'Pack the folders'
-        sh 'tar zcf /home/jenkins/logs.tar /var/log'
-      }
+    environment{
+        AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
     }
-
-    stage('Exex') {
-      steps {
-        echo 'Executing...'
-        sh 'mvn exec:java'
-      }
+    options { 
+        disableConcurrentBuilds()
+        ansiColor('xterm')
+        timeout(time: 5, unit: 'MINUTES')
+        timestamps()
     }
+    stages {
+        stage('Init') {
+            steps {
+                dir('terraform') {
+                    sh 'terraform init'
+                }
+            }
+        }
+        stage('Plan') {
+            steps {
+                dir('terraform') {
+                    sh 'terraform plan'
+                }
+            }
+        }
+        stage('Apply') {
+            input {
+                message "Are you sure you want to apply?"
+                ok "Deployment in proccess"
+            }
+            when  {
+                branch 'main'
+            }
+            steps {
+                dir('terraform') {
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
 
-    stage('OK') {
-      steps {
-        sleep 10
-      }
+        stage('Clean') {
+            steps {
+                dir('terraform') {
+                    sh 'rm -r .terraform/ && rm .terraform.* && rm terraform.*'
+                }
+            }
+        }
     }
-
-  }
+    post {
+        failure {
+            echo "There has been an error, check your configuration"
+        }
+        success {
+            echo "Deployment completed"
+        }
+    }
 }
+
