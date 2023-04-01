@@ -9,7 +9,8 @@ pipeline {
     stage('Init') {
       steps {
         dir(path: 'terraform') {
-          sh 'terraform init'
+          sh '''cd /home/terraform/www
+terraform init'''
         }
 
       }
