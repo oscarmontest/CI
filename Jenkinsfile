@@ -19,10 +19,10 @@ terraform init'''
     stage('Plan') {
       steps {
         dir(path: 'terraform') {
-          sh 'terraform plan'
+          sh '''cd /home/terraform/www
+terraform plan'''
         }
 
-        sh 'sh "pwd"'
       }
     }
 
