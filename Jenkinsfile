@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label('terraform_deploy_s3')
+        label('aws')
     }
     environment{
         AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
