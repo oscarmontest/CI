@@ -18,7 +18,7 @@ terraform init'''
 
     stage('Plan') {
       steps {
-        dir(path: '/home/terraform/www')
+        dir(path: '/home/terraform/www/')
         dir(path: 'terraform') {
           sh 'terraform plan'
         }
