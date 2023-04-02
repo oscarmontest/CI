@@ -3,6 +3,10 @@ pipeline {
     node {
       label 'aws'
     }
+  environment{
+        AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
+    }
 
   }
   stages {
@@ -10,7 +14,7 @@ pipeline {
       steps {
         dir(path: 'terraform') {
           sh '''cd /home/terraform/www
-terraform init'''
+                terraform init'''
         }
 
       }
@@ -68,4 +72,3 @@ terraform plan'''
     timeout(time: 5, unit: 'MINUTES')
     timestamps()
   }
-}
