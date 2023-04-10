@@ -6,21 +6,25 @@ pipeline {
         AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
         AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
     }
-    
+    options { 
+        disableConcurrentBuilds()
+        ansiColor('xterm')
+        timeout(time: 5, unit: 'MINUTES')
+        timestamps()
+    }
     stages {
         stage('Init') {
             steps {
                 dir('terraform') {
-                    sh '''cd /home/terraform/www
-					terraform init'''
+                    sh 'terraform init'
                 }
             }
         }
         stage('Plan') {
             steps {
                 dir('terraform') {
-                 sh '''cd /home/terraform/www
-          terraform plan'''
+                    sh 'terraform plan'
+                }
             }
         }
         stage('Apply') {
