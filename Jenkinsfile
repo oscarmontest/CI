@@ -1,74 +1,57 @@
 pipeline {
-  agent {
-    node {
-      label 'aws'
+    agent {
+        label('aws')
     }
-  environment{
+    environment{
         AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
         AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
     }
-
-  }
-  stages {
-    stage('Init') {
-      steps {
-        dir(path: 'terraform') {
-          sh '''cd /home/terraform/www
-                terraform init'''
+    
+    stages {
+        stage('Init') {
+            steps {
+                dir('terraform') {
+                    sh '''cd /home/terraform/www
+					terraform init'''
+                }
+            }
+        }
+        stage('Plan') {
+            steps {
+                dir('terraform') {
+                 sh '''cd /home/terraform/www
+          terraform plan'''
+            }
+        }
+        stage('Apply') {
+            input {
+                message "Are you sure you want to apply?"
+                ok "Deployment in proccess"
+            }
+            when  {
+                branch 'main'
+            }
+            steps {
+                dir('terraform') {
+                    sh 'terraform apply -auto-approve'
+                }
+            }
         }
 
-      }
-    }
-
-    stage('Plan') {
-      steps {
-        dir(path: 'terraform') {
-          sh '''cd /home/terraform/www
-terraform plan'''
+        stage('Clean') {
+            steps {
+                dir('terraform') {
+                    sh 'rm -r .terraform/ && rm .terraform.* && rm terraform.*'
+                }
+            }
         }
-
-      }
     }
-
-    stage('Apply') {
-      when {
-        branch 'main'
-      }
-      input {
-        message 'Are you sure you want to apply?'
-        id 'Deployment in proccess'
-      }
-      steps {
-        dir(path: 'terraform') {
-          sh 'terraform apply -auto-approve'
+    post {
+        failure {
+            echo "There has been an error, check your configuration"
         }
-
-      }
-    }
-
-    stage('Clean') {
-      steps {
-        dir(path: 'terraform') {
-          sh 'rm -r .terraform/ && rm .terraform.* && rm terraform.*'
+        success {
+            echo "Deployment completed"
         }
-
-      }
     }
-
-  }
-  post {
-    failure {
-      echo 'There has been an error, check your configuration'
-    }
-
-    success {
-      echo 'Deployment completed'
-    }
-
-  }
-  options {
-    disableConcurrentBuilds()
-    ansiColor('xterm')
-    timeout(time: 5, unit: 'MINUTES')
-    timestamps()
-  }
+}
