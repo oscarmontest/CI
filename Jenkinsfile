@@ -16,14 +16,14 @@ pipeline {
         stage('Init') {
             steps {
                 dir('terraform') {
-                    sh 'terraform init'
+                   sh 'terraform init'
                 }
             }
         }
         stage('Plan') {
             steps {
                 dir('terraform') {
-                    sh 'terraform plan'
+                   sh 'terraform plan'
                 }
             }
         }
@@ -37,8 +37,8 @@ pipeline {
             }
             steps {
                 dir('terraform') {
-                    sh 'terraform apply -auto-approve'
-                }
+                     sh 'terraform apply -auto-approve'
+              }
             }
         }
 
