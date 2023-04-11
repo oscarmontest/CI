@@ -31,8 +31,8 @@ pipeline {
         }
         stage('Apply') {
             input {
-                message "Confirmar despliege"
-                ok "Despliegue en curso"
+                message "Confirm deployment"
+                ok "Deploying..."
             }
             when  {
                 branch 'dev'
@@ -42,15 +42,6 @@ pipeline {
                      sh '''cd www
                      terraform apply -auto-approve'''
               }
-            }
-        }
-
-        stage('Clean') {
-            steps {
-                dir('terraform') {
-                    sh '''cd www
-                    rm -r .terraform/ && rm .terraform.* && rm terraform.*'''
-                }
             }
         }
     }
