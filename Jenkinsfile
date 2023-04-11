@@ -23,7 +23,8 @@ pipeline {
         stage('Plan') {
             steps {
                 dir('terraform') {
-                   sh 'terraform plan'
+                   sh '''cd www
+                   terraform plan'''
                 }
             }
         }
@@ -37,7 +38,8 @@ pipeline {
             }
             steps {
                 dir('terraform') {
-                     sh 'terraform apply -auto-approve'
+                     sh '''cd www
+                     terraform apply -auto-approve'''
               }
             }
         }
