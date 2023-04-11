@@ -16,7 +16,8 @@ pipeline {
         stage('Init') {
             steps {
                 dir('terraform') {
-                   sh 'terraform init'
+                   sh '''cd www
+                    terraform init'''
                 }
             }
         }
