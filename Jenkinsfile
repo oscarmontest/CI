@@ -35,7 +35,7 @@ pipeline {
                 ok "Deployment in proccess"
             }
             when  {
-                branch 'main'
+                branch 'dev'
             }
             steps {
                 dir('terraform') {
