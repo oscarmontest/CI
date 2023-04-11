@@ -31,8 +31,8 @@ pipeline {
         }
         stage('Apply') {
             input {
-                message "Are you sure you want to apply?"
-                ok "Deployment in proccess"
+                message "Confirmar despliege"
+                ok "Despliegue en curso"
             }
             when  {
                 branch 'dev'
@@ -48,7 +48,8 @@ pipeline {
         stage('Clean') {
             steps {
                 dir('terraform') {
-                    sh 'rm -r .terraform/ && rm .terraform.* && rm terraform.*'
+                    sh '''cd www
+                    rm -r .terraform/ && rm .terraform.* && rm terraform.*'''
                 }
             }
         }
