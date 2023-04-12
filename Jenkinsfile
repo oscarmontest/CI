@@ -44,6 +44,18 @@ pipeline {
               }
             }
         }
+        stage('Test') {
+            agent {
+               node {
+                   label 'test'
+               }
+             }
+           steps {
+                dir('terraform') {
+                   sh 'curl "kc-bucket-om.s3-website-eu-west-1.amazonaws.com"'
+                }
+            }
+        }
     }
     post {
         failure {
