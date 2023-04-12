@@ -12,5 +12,5 @@ plan:
 apply:
 	cd ../terraform/www && terraform apply -auto-approve
 
-destroy 
+destroy: 
 	cd ../terraform/www && terraform destroy -auto-approve
